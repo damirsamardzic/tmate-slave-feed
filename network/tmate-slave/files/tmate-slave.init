@@ -1,0 +1,32 @@
+#!/bin/sh /etc/rc.common
+
+START=55
+STOP=35
+TMATE="/usr/bin/tmate-slave"
+SERVICE_WRITE_PID=1
+SERVICE_DAEMONIZE=1
+
+start() {
+    if test -d /etc/tmate-slave/keys; then
+        continue
+    else
+        cd /etc/tmate-slave
+        bash ./create_keys.sh
+        # get fingerprints with: ssh-keygen -l -Emd5 -f /etc/tmate-slave/keys/ssh_host_rsa_key
+        ssh-keygen -l -Emd5 -f keys/ssh_host_rsa_key.pub > fingerprints 
+        ssh-keygen -l -Emd5 -f keys/ssh_host_ecdsa_key.pub >> fingerprints
+    fi
+    
+    host=$( uci show tmate-slave.@tmate-slave[0].host|awk -F\' '{print $2}' )
+    port=$( uci show tmate-slave.@tmate-slave[0].port|awk -F\' '{print $2}' )
+    keys_dir=$( uci show tmate-slave.@tmate-slave[0].keys_dir|awk -F\' '{print $2}' )
+    
+    args="-h $host -p $port -k $keys_dir -s"
+    
+    service_start $TMATE $args &
+}
+
+stop() {
+    service_stop $TMATE
+}
+

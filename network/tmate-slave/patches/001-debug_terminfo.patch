@@ -1,0 +1,44 @@
+--- a/tmate-debug.c
++++ b/tmate-debug.c
+@@ -1,4 +1,3 @@
+-#include <execinfo.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <regex.h>
+@@ -59,8 +58,8 @@ void tmate_print_stack_trace(void)
+ 	char **strings;
+ 	size_t i;
+ 
+-	size = backtrace(array, 20);
+-	strings = backtrace_symbols(array, size);
++	size = 10;
++	strings = "AAA";
+ 
+ 	tmate_info("============ %zd stack frames ============", size);
+ 
+@@ -77,5 +76,4 @@ void tmate_print_stack_trace(void)
+ void tmate_preload_trace_lib(void)
+ {
+ 	void *array[1];
+-	backtrace(array, 1);
+ }
+--- a/tmate-slave.c
++++ b/tmate-slave.c
+@@ -438,7 +438,7 @@ static void tmate_spawn_slave_daemon(str
+ 	 * Needed to initialize the database used in tty-term.c.
+ 	 * We won't have access to it once in the jail.
+ 	 */
+-	setup_ncurse(STDOUT_FILENO, "screen-256color");
++	setup_ncurse(STDOUT_FILENO, "screen");
+ 
+ 	tmate_daemon_init(session);
+ 
+@@ -508,7 +508,7 @@ static void tmate_spawn_slave_pty_client
+ 	dup2(slave_pty, STDOUT_FILENO);
+ 	dup2(slave_pty, STDERR_FILENO);
+ 
+-	setup_ncurse(slave_pty, "screen-256color");
++	setup_ncurse(slave_pty, "screen");
+ 
+ 	tmate_client_pty_init(session);
+ 
