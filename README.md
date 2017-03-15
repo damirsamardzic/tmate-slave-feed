@@ -2,7 +2,7 @@
 OpenWrt feed for tmate-slave server (https://github.com/tmate-io/tmate-slave)
 
 Tested on Raspberry Pi Model 3 B with OpenWrt master branch.
-Debug is disabled for tmate-slave (with dummy hack on tmate-debug.c to avoid execinfo.h).
+Debug is disabled for tmate-slave (with dummy hack on tmate-debug.c to avoid execinfo.h). TODO: see https://github.com/tmate-io/tmate/issues/83
 
 Instructions:
 ```
@@ -22,3 +22,14 @@ make defconfig
 make V=s
 ```
 - answer with y once asked for CFQ Group Scheduling support 
+
+
+Once OpenWrt boots up, tmate-slave is automatically started with keys generated in ```/etc/tmate-slave/keys``` directory.
+
+Configuration is stored in ```/etc/config/tmate-slave```.
+
+Start / stop commands:
+```
+/etc/init.d/tmate-slave stop
+/etc/init.d/tmate-slave start
+```
