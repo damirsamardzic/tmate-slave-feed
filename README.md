@@ -18,7 +18,6 @@ make menuconfig
 - select Network / tmate-slave
 - select Global build settings / Enable kernel cgroups && Enable kernel namespace
 ```
-make defconfig
 make V=s
 ```
 - answer with y once asked for CFQ Group Scheduling support 
